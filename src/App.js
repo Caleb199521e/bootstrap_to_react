@@ -17,11 +17,12 @@ import Shelves from './Pages/Shelves'
 import Wallpapers from './Pages/Wallpapers'
 import Vases from './Pages/Vases'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import header from './components/header'
-import footer from './components/footer'
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 function App() {
   return ( 
+    
     <div>
       <header/>
       <BrowserRouter>
