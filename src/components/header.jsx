@@ -65,13 +65,13 @@ function Header() {
               </a>
             </li>
             <li>
-              <a className="nav-link" href="cart.html">
+              <a className="nav-link" href="/Cart">
                 <img src="../assets/images/cart.svg" alt="Cart" />
               </a>
             </li>
           </ul>
           <button className="btn btn-primary ms-3">
-            <a href="login.html" className="text-white text-decoration-none">
+            <a href="/login" className="text-white text-decoration-none">
               Login
             </a>
           </button>

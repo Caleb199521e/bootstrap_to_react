@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./Pages/home";
 import About from "./Pages/about";
 import Contact from "./Pages/Contact";
@@ -16,15 +17,23 @@ import Services from "./Pages/Services";
 import Shelves from "./Pages/Shelves";
 import Wallpapers from "./Pages/Wallpapers";
 import Vases from "./Pages/Vases";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 function App() {
+  const location = useLocation();
+
+  // Define an array of paths where the Header and Footer should not be displayed
+  const noHeaderFooterPaths = ["/login"];
+
+  // Check if the current path is in the array
+  const isNoHeaderFooter = noHeaderFooterPaths.includes(location.pathname);
+
   return (
-    <BrowserRouter>
-      <Header />
+    <>
+      {!isNoHeaderFooter && <Header />}
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
@@ -43,9 +52,17 @@ function App() {
         <Route path="/shelves" element={<Shelves />} />
         <Route path="/vases" element={<Vases />} />
       </Routes>
-      <Footer />
+      {!isNoHeaderFooter && <Footer />}
+    </>
+  );
+}
+
+function AppWrapper() {
+  return (
+    <BrowserRouter>
+      <App />
     </BrowserRouter>
   );
 }
 
-export default App;
+export default AppWrapper;
