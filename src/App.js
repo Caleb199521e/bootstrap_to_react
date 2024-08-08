@@ -1,5 +1,11 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import Home from "./Pages/home";
 import About from "./Pages/about";
 import Contact from "./Pages/Contact";
@@ -19,15 +25,35 @@ import Wallpapers from "./Pages/Wallpapers";
 import Vases from "./Pages/Vases";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Define an array of paths where the Header and Footer should not be displayed
   const noHeaderFooterPaths = ["/login"];
 
   // Check if the current path is in the array
   const isNoHeaderFooter = noHeaderFooterPaths.includes(location.pathname);
+
+  const CheckifUserisAuthenticated = () => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+      } else {
+        navigate("/login");
+      }
+    });
+  };
+
+  useEffect(() => {
+    CheckifUserisAuthenticated();
+    // return () => {
+    //   CheckifUserisAuthenticated;
+    // };
+  }, []);
 
   return (
     <>

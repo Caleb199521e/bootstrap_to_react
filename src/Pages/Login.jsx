@@ -1,8 +1,20 @@
-import React, { useState } from 'react';
-import './Login.css'; // Import your CSS file for styling
+import React, { useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import "./Login.css";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import FirebaseConfig from "../Firebase";
 
 function Login() {
   const [isLoginActive, setIsLoginActive] = useState(true);
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSwitchToSignup = (e) => {
     e.preventDefault();
@@ -17,20 +29,67 @@ function Login() {
   const handleGoogleLogin = (e) => {
     e.preventDefault();
     console.log("Google login clicked");
-    // Simulate a Google login
   };
 
   const handleFacebookLogin = (e) => {
     e.preventDefault();
     console.log("Facebook login clicked");
-    // Simulate a Facebook login
+  };
+
+  const onSignupCliecked = (e) => {
+    e.preventDefault();
+    const auth = getAuth(FirebaseConfig);
+    signInWithEmailAndPassword(auth, userEmail, userPassword)
+      .then(() => {
+        setUserEmail("");
+        setUserPassword("");
+        alert("Sign Up successful");
+        navigate("/");
+      })
+
+      .catch((error) => {
+        alert(error.message);
+        // setIsloading(false);
+      });
+  };
+
+  const onLogin = (e) => {
+    e.preventDefault();
+    const auth = getAuth(FirebaseConfig);
+    createUserWithEmailAndPassword(auth, userEmail, userPassword)
+      .then(() => {
+        alert("Welcome back");
+        setUserEmail("");
+        setUserPassword("");
+      })
+
+      .catch((error) => {
+        alert(error.message);
+        // setIsloading(false);
+      });
+  };
+
+  const SignUpWithGmail = (event) => {
+    event.preventDefault();
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(() => {
+        setTimeout(() => {
+          alert("You are logged In. Welcome back");
+        }, 2000);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
   };
 
   return (
     <div className="login-page">
       <div className="wrapper">
         {isLoginActive ? (
-          <form id="login-form" className="active-form">
+          <form id="login-form" className="active-form" onSubmit={onLogin}>
             <h1>Login</h1>
             <div className="input-box">
               <input
@@ -39,7 +98,7 @@ function Login() {
                 placeholder="Username"
                 required
               />
-              <i className='bx bx-user'></i>
+              <i className="bx bx-user"></i>
             </div>
             <div className="input-box">
               <input
@@ -48,36 +107,38 @@ function Login() {
                 placeholder="Password"
                 required
               />
-              <i className='bx bx-lock-alt'></i>
+              <i className="bx bx-lock-alt"></i>
             </div>
             <div className="remember-forgot">
-              <label>
-                <input type="checkbox" /> Remember me
-              </label>
               <a href="#">Forgot password?</a>
             </div>
             <button type="submit" className="btn-login">
               Login
             </button>
             <div className="social-login">
-              <button onClick={handleGoogleLogin} className="btn-google">
+              <button onClick={SignUpWithGmail} className="btn-google">
                 <i className="bx bxl-google"></i> Sign in with Google
-              </button>
-              <button onClick={handleFacebookLogin} className="btn-facebook">
-                <i className="bx bxl-facebook"></i> Sign in with Facebook
               </button>
             </div>
             <div className="register-link">
               <p>
-                Don't have an account?{' '}
-                <a href="#" onClick={handleSwitchToSignup} className="form-switch-link">
+                Don't have an account?{" "}
+                <a
+                  href="#"
+                  onClick={handleSwitchToSignup}
+                  className="form-switch-link"
+                >
                   Register
                 </a>
               </p>
             </div>
           </form>
         ) : (
-          <form id="signup-form" className="active-form">
+          <form
+            id="signup-form"
+            className="active-form"
+            onSubmit={onSignupCliecked}
+          >
             <h1>Sign Up</h1>
             <div className="input-box">
               <input
@@ -86,7 +147,7 @@ function Login() {
                 placeholder="Username"
                 required
               />
-              <i className='bx bx-user'></i>
+              <i className="bx bx-user"></i>
             </div>
             <div className="input-box">
               <input
@@ -94,8 +155,10 @@ function Login() {
                 id="signup-email"
                 placeholder="Email"
                 required
+                value={userEmail}
+                onChange={(event) => setUserEmail(event.target.value)}
               />
-              <i className='bx bx-envelope'></i>
+              <i className="bx bx-envelope"></i>
             </div>
             <div className="input-box">
               <input
@@ -103,24 +166,27 @@ function Login() {
                 id="signup-password"
                 placeholder="Password"
                 required
+                value={userPassword}
+                onChange={(event) => setUserPassword(event.target.value)}
               />
-              <i className='bx bx-lock-alt'></i>
+              <i className="bx bx-lock-alt"></i>
             </div>
             <button type="submit" className="btn-login">
               Sign Up
             </button>
             <div className="social-login">
-              <button onClick={handleGoogleLogin} className="btn-google">
-                <i className="bx bxl-google"></i> Sign up with Google
-              </button>
-              <button onClick={handleFacebookLogin} className="btn-facebook">
-                <i className="bx bxl-facebook"></i> Sign up with Facebook
+              <button onClick={SignUpWithGmail} className="btn-google">
+                <i className="bxl-google"></i> Sign up with Google
               </button>
             </div>
             <div className="register-link">
               <p>
-                Already have an account?{' '}
-                <a href="#" onClick={handleSwitchToLogin} className="form-switch-link">
+                Already have an account?{" "}
+                <a
+                  href="#"
+                  onClick={handleSwitchToLogin}
+                  className="form-switch-link"
+                >
                   Login
                 </a>
               </p>
