@@ -2,7 +2,8 @@ import React from 'react'
 import './about.css';
 function About() {
   return (
-    <div><div className="about-page">
+    <div>
+      <div className="about-page">
     <section className="about-section">
       <div className="about-header">
         <h1>About Us</h1>
@@ -19,13 +20,16 @@ function About() {
     </section>
     <section className="mission-vision-section">
       <div className="mission">
+      <i className="fa-solid fa-bullseye"></i>
         <h2>Our Mission</h2>
         <p>
           Through our highly motivated staff and a wide range of unique products, we seek to be your go-to decor company in enhancing your space and providing solutions to your decor needs.
         </p>
       </div>
       <div className="vision">
+      <i className="fa-solid fa-eye"></i>
         <h2>Our Vision</h2>
+
         <ul>
           <li>To build a strong, highly motivated, and healthy working team</li>
           <li>Consistent brand experience across online and offline</li>

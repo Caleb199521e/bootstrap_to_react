@@ -61,12 +61,9 @@ function Login() {
             </button>
             <div className="social-login">
               <button onClick={handleGoogleLogin} className="btn-google">
-                <i className="bx bxl-google"></i> Sign in with Google
+              <i class="fa-brands fa-google"></i> Sign in with Google
               </button>
-              <button onClick={handleFacebookLogin} className="btn-facebook">
-                <i className="bx bxl-facebook"></i> Sign in with Facebook
-              </button>
-            </div>
+              </div>
             <div className="register-link">
               <p>
                 Don't have an account?{' '}
@@ -111,12 +108,9 @@ function Login() {
             </button>
             <div className="social-login">
               <button onClick={handleGoogleLogin} className="btn-google">
-                <i className="bx bxl-google"></i> Sign up with Google
+              <i class="fa-brands fa-google"></i>Sign up with Google
               </button>
-              <button onClick={handleFacebookLogin} className="btn-facebook">
-                <i className="bx bxl-facebook"></i> Sign up with Facebook
-              </button>
-            </div>
+              </div>
             <div className="register-link">
               <p>
                 Already have an account?{' '}

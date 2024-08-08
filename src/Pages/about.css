@@ -3,6 +3,24 @@
     max-width: 1200px;
     margin: 0 auto;
     font-family: Arial, sans-serif;
+        
+  }
+
+  .about-section{
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+
+  }
+
+  .about-header{
+    margin-right: 30px;
+    width: 100%;
+  }
+
+  .about-journey{
+    width: 100%;
   }
   
   .about-header, .about-journey, .mission, .vision {
@@ -29,12 +47,16 @@
   .vision ul li {
     margin-bottom: 10px;
   }
+
+  .vision i ,.mission i{
+    font-size: 30px;
+  }
   
   .mission-vision-section {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 30px;
-  }
+    margin-bottom: 70px;
+ }
   
   .mission, .vision {
     flex: 1;

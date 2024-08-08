@@ -71,7 +71,8 @@ function footer() {
                 </li>
                 <li>
                   <a href="#">
-                    <span className="fa fa-brands fa-twitter"></span>
+                    {/* <span className="fab fa-twitter"></span> */}
+                    <i className="fab fa-x-twitter"></i>
                   </a>
                 </li>
                 <li>

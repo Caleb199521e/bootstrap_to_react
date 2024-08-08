@@ -32,7 +32,7 @@ function Wallclocks() {
         <li><a href="/Sheets">Marble Sheets</a></li>
         <li><a href="/vases">Vases</a></li>
         <li><a href="/wallclocks">Wall Clocks</a></li>
-        <li><a href="/decorAccessories">Decor Accessories</a></li>
+        <li><a href="/Accessories">Decor Accessories</a></li>
         <li><a href="/shelves">Shelves</a></li>
         {/* Add more categories as needed */}
       </ul>
