@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import AppWrapper from './App'; // Ensure this is the correct path to your App component
+import { CartProvider } from '../src/Context/CartContext'; // Ensure this is the correct path to your CartContext
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <CartProvider>
+      <AppWrapper />
+    </CartProvider>
   </React.StrictMode>
 );
 

@@ -931,3 +931,15 @@ form.active-form {
 .products-display{
   margin: 0%;
 }
+
+.cart-counter {
+  position: relative;
+  /* top: -10px; /* Adjust as needed */
+  /* right: -2px;  */
+  background-color: red; /* Adjust color as needed */
+  color: white;
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 12px; /* Adjust font size as needed */
+  font-weight: bold;
+}

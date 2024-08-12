@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import {
   createUserWithEmailAndPassword,
@@ -28,60 +28,51 @@ function Login() {
 
   const handleGoogleLogin = (e) => {
     e.preventDefault();
-    console.log("Google login clicked");
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(() => {
+        alert("You are logged in. Welcome back!");
+        navigate("/");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
   };
 
   const handleFacebookLogin = (e) => {
     e.preventDefault();
+    // Implement Facebook login here
     console.log("Facebook login clicked");
   };
 
-  const onSignupCliecked = (e) => {
+  const onSignup = (e) => {
     e.preventDefault();
-    const auth = getAuth(FirebaseConfig);
-    signInWithEmailAndPassword(auth, userEmail, userPassword)
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, userEmail, userPassword)
       .then(() => {
         setUserEmail("");
         setUserPassword("");
-        alert("Sign Up successful");
+        alert("Sign up successful");
         navigate("/");
       })
-
       .catch((error) => {
         alert(error.message);
-        // setIsloading(false);
       });
   };
 
   const onLogin = (e) => {
     e.preventDefault();
-    const auth = getAuth(FirebaseConfig);
-    createUserWithEmailAndPassword(auth, userEmail, userPassword)
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, userEmail, userPassword)
       .then(() => {
-        alert("Welcome back");
+        alert("Welcome back!");
         setUserEmail("");
         setUserPassword("");
+        navigate("/");
       })
-
       .catch((error) => {
         alert(error.message);
-        // setIsloading(false);
-      });
-  };
-
-  const SignUpWithGmail = (event) => {
-    event.preventDefault();
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then(() => {
-        setTimeout(() => {
-          alert("You are logged In. Welcome back");
-        }, 2000);
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        alert(errorMessage);
       });
   };
 
@@ -93,10 +84,12 @@ function Login() {
             <h1>Login</h1>
             <div className="input-box">
               <input
-                type="text"
-                id="login-username"
-                placeholder="Username"
+                type="email"
+                id="login-email"
+                placeholder="Email"
                 required
+                value={userEmail}
+                onChange={(event) => setUserEmail(event.target.value)}
               />
               <i className="bx bx-user"></i>
             </div>
@@ -106,6 +99,8 @@ function Login() {
                 id="login-password"
                 placeholder="Password"
                 required
+                value={userPassword}
+                onChange={(event) => setUserPassword(event.target.value)}
               />
               <i className="bx bx-lock-alt"></i>
             </div>
@@ -137,11 +132,7 @@ function Login() {
             </div>
           </form>
         ) : (
-          <form
-            id="signup-form"
-            className="active-form"
-            onSubmit={onSignupCliecked}
-          >
+          <form id="signup-form" className="active-form" onSubmit={onSignup}>
             <h1>Sign Up</h1>
             <div className="input-box">
               <input
@@ -184,7 +175,7 @@ function Login() {
               <button onClick={handleFacebookLogin} className="btn-facebook">
                 <i className="bx bxl-facebook"></i> Sign up with Facebook
               </button>
-              </div>
+            </div>
             <div className="register-link">
               <p>
                 Already have an account?{" "}

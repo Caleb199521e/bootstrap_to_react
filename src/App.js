@@ -23,7 +23,7 @@ import Services from "./Pages/Services";
 import Shelves from "./Pages/Shelves";
 import Wallpapers from "./Pages/Wallpapers";
 import Vases from "./Pages/Vases";
-import Header from "./components/Header";
+import Header from "./components/header";
 import Footer from "./components/Footer";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -31,29 +31,19 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Define an array of paths where the Header and Footer should not be displayed
   const noHeaderFooterPaths = ["/login"];
-
-  // Check if the current path is in the array
   const isNoHeaderFooter = noHeaderFooterPaths.includes(location.pathname);
 
-  const CheckifUserisAuthenticated = () => {
+  useEffect(() => {
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/");
-      } else {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user && location.pathname !== "/login") {
         navigate("/login");
       }
     });
-  };
 
-  useEffect(() => {
-    CheckifUserisAuthenticated();
-    // return () => {
-    //   CheckifUserisAuthenticated;
-    // };
-  }, []);
+    return () => unsubscribe();
+  }, [location.pathname, navigate]);
 
   return (
     <>

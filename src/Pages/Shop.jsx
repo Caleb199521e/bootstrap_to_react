@@ -1,6 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
+import { useCart } from "../Context/CartContext"; // Ensure this is the correct path to your CartContext
 
-function shop() {
+function Shop() {
+  const { addToCart, getCartItemCount } = useCart();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+  };
+
+  const products = [
+    {
+      id: 1,
+      name: "Astronut Artefact",
+      price: 100.00,
+      imgSrc: "/assets/images/Product/Artefacts/1.jpg"
+    },
+    {
+      id: 2,
+      name: "Golden Artefact",
+      price: 150.00,
+      imgSrc: "/assets/images/Product/Artefacts/2.jpg"
+    },
+    {
+      id: 3,
+      name: "Silver Artefact",
+      price: 120.00,
+      imgSrc: "/assets/images/Product/Artefacts/3.jpg"
+    },
+    {
+      id: 4,
+      name: "Wooden Artefact",
+      price: 130.00,
+      imgSrc: "/assets/images/Product/Artefacts/4.jpg"
+    }
+  ];
+
+  // Filter products based on the search term
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       {/* Start Hero Section */}
@@ -23,33 +63,15 @@ function shop() {
           <div className="sidebar">
             <h2>Categories</h2>
             <ul className="category-list">
-              <li>
-                <a href="/wallpapers">Wallpapers</a>
-              </li>
-              <li>
-                <a href="/Flowers">Decor Flowers</a>
-              </li>
-              <li>
-                <a href="/Tiles">PVC Tiles & Wall Panels</a>
-              </li>
-              <li>
-                <a href="/flutedPanels">Fluted Panels</a>
-              </li>
-              <li>
-                <a href="/Sheets">Marble Sheets</a>
-              </li>
-              <li>
-                <a href="/vases">Vases</a>
-              </li>
-              <li>
-                <a href="/wallclocks">Wall Clocks</a>
-              </li>
-              <li>
-                <a href="/decorAccessories">Decor Accessories</a>
-              </li>
-              <li>
-                <a href="/shelves">Shelves</a>
-              </li>
+              <li><a href="/wallpapers">Wallpapers</a></li>
+              <li><a href="/flowers">Decor Flowers</a></li>
+              <li><a href="/tiles">PVC Tiles & Wall Panels</a></li>
+              <li><a href="/flutedPanels">Fluted Panels</a></li>
+              <li><a href="/sheets">Marble Sheets</a></li>
+              <li><a href="/vases">Vases</a></li>
+              <li><a href="/wallclocks">Wall Clocks</a></li>
+              <li><a href="/decorAccessories">Decor Accessories</a></li>
+              <li><a href="/shelves">Shelves</a></li>
               {/* Add more categories as needed */}
             </ul>
             <div className="search-bar">
@@ -57,6 +79,8 @@ function shop() {
                 type="text"
                 id="product-search"
                 placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <div className="price-filter">
@@ -88,87 +112,25 @@ function shop() {
             <div className="untree_co-section product-section before-footer-section">
               <div className="product-container">
                 <div className="row">
-                  {/* Start Column 1 */}
-                  <div className="col-12 col-md-4 col-lg-3 mb-5">
-                    <a className="product-item" href="#">
-                      <img
-                        src="../assets/images/Product/Artefacts/1.jpg"
-                        className="img-fluid product-thumbnail"
-                        alt="Astronut Artefact"
-                      />
-                      <h3 className="product-title">Astronut Artefact</h3>
-                      <strong className="product-price">GH₵ 100.00</strong>
-                      <span className="icon-cross">
+                  {filteredProducts.map((product) => (
+                    <div key={product.id} className="col-12 col-md-4 col-lg-3 mb-5">
+                      <div className="product-item">
                         <img
-                          src="../assets/images/cross.svg"
-                          className="img-fluid"
-                          alt="cross icon"
+                          src={product.imgSrc}
+                          className="img-fluid product-thumbnail"
+                          alt={product.name}
                         />
-                      </span>
-                    </a>
-                  </div>
-                  {/* End Column 1 */}
-                  {/* Start Column 2 */}
-                  <div className="col-12 col-md-4 col-lg-3 mb-5">
-                    <a className="product-item" href="#">
-                      <img
-                        src="../assets/images/Product/Artefacts/2.jpg"
-                        className="img-fluid product-thumbnail"
-                        alt="Golden Artefact"
-                      />
-                      <h3 className="product-title">Golden Artefact</h3>
-                      <strong className="product-price">GH₵ 150.00</strong>
-                      <span className="icon-cross">
-                        <img
-                          src="../assets/images/cross.svg"
-                          className="img-fluid"
-                          alt="cross icon"
-                        />
-                      </span>
-                    </a>
-                  </div>
-                  {/* End Column 2 */}
-                  {/* Start Column 3 */}
-                  <div className="col-12 col-md-4 col-lg-3 mb-5">
-                    <a className="product-item" href="#">
-                      <img
-                        src="../assets/images/Product/Artefacts/3.jpg"
-                        className="img-fluid product-thumbnail"
-                        alt="Silver Artefact"
-                      />
-                      <h3 className="product-title">Silver Artefact</h3>
-                      <strong className="product-price">GH₵ 120.00</strong>
-                      <span className="icon-cross">
-                        <img
-                          src="../assets/images/cross.svg"
-                          className="img-fluid"
-                          alt="cross icon"
-                        />
-                      </span>
-                    </a>
-                  </div>
-                  {/* End Column 3 */}
-                  {/* Start Column 4 */}
-                  <div className="col-12 col-md-4 col-lg-3 mb-5">
-                    <a className="product-item" href="#">
-                      <img
-                        src="../assets/images/Product/Artefacts/4.jpg"
-                        className="img-fluid product-thumbnail"
-                        alt="Wooden Artefact"
-                      />
-                      <h3 className="product-title">Wooden Artefact</h3>
-                      <strong className="product-price">GH₵ 130.00</strong>
-                      <span className="icon-cross">
-                        <img
-                          src="../assets/images/cross.svg"
-                          className="img-fluid"
-                          alt="cross icon"
-                        />
-                      </span>
-                    </a>
-                  </div>
-                  {/* End Column 4 */}
-                  {/* Add more products as needed */}
+                        <h3 className="product-title">{product.name}</h3>
+                        <strong className="product-price">GH₵ {product.price.toFixed(2)}</strong>
+                        <button 
+                          className="btn-add-to-cart" 
+                          onClick={() => handleAddToCart(product)}
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -179,4 +141,4 @@ function shop() {
   );
 }
 
-export default shop;
+export default Shop;
