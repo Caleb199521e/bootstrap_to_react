@@ -10,7 +10,8 @@ function Contact() {
               <div className="intro-excerpt">
                 <h1>Contact</h1>
                 <p className="mb-4">
-                  Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.
+                Have questions or need support? Reach out to our team at Possible Decor—we’re here to help you create the perfect space.
+                 Contact us via phone, email, or whatsapp, and we’ll get back to you shortly!
                 </p>
                 <p>
                   <a href="/shop" className="btn btn-secondary me-2">Shop Now</a>
