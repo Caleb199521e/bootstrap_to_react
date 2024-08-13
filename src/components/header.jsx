@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../Firebase"; // Import auth from Firebase
 import { useCart } from '../Context/CartContext'; // Import CartContext
+import { useLocation, Link } from "react-router-dom";
 
 function Header() {
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
@@ -9,6 +10,7 @@ function Header() {
   const [userPassword, setUserPassword] = useState("");
   const { getCartItemCount } = useCart(); // Get cart item count
   const cartItems = getCartItemCount(); // Get the count of items in the cart
+  const location = useLocation(); // Get current location for active link
 
   useEffect(() => {
     const CheckifUserisAuthenticated = () => {
@@ -77,14 +79,24 @@ function Header() {
 
           <div className="collapse navbar-collapse" id="navbarsFurni">
             <ul className="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-              <li className="nav-item active">
-                <a className="nav-link" href="/home">Home</a>
+              <li className={`nav-item ${location.pathname === "/home" ? "active" : ""}`}>
+                <Link className="nav-link" to="/home">Home</Link>
               </li>
-              <li><a className="nav-link" href="/shop">Shop</a></li>
-              <li><a className="nav-link" href="/about">About us</a></li>
-              <li><a className="nav-link" href="/services">Services</a></li>
-              <li><a className="nav-link" href="/blog">Blog</a></li>
-              <li><a className="nav-link" href="/contact">Contact us</a></li>
+              <li className={`nav-item ${location.pathname === "/shop" ? "active" : ""}`}>
+                <Link className="nav-link" to="/shop">Shop</Link>
+              </li>
+              <li className={`nav-item ${location.pathname === "/about" ? "active" : ""}`}>
+                <Link className="nav-link" to="/about">About us</Link>
+              </li>
+              <li className={`nav-item ${location.pathname === "/services" ? "active" : ""}`}>
+                <Link className="nav-link" to="/services">Services</Link>
+              </li>
+              <li className={`nav-item ${location.pathname === "/blog" ? "active" : ""}`}>
+                <Link className="nav-link" to="/blog">Blog</Link>
+              </li>
+              <li className={`nav-item ${location.pathname === "/contact" ? "active" : ""}`}>
+                <Link className="nav-link" to="/contact">Contact us</Link>
+              </li>
             </ul>
 
             <ul className="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">

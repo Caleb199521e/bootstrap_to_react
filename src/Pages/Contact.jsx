@@ -13,8 +13,8 @@ function Contact() {
                   Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.
                 </p>
                 <p>
-                  <a href="#" className="btn btn-secondary me-2">Shop Now</a>
-                  <a href="#" className="btn btn-white-outline">Explore</a>
+                  <a href="/shop" className="btn btn-secondary me-2">Shop Now</a>
+                  <a href="/home" className="btn btn-white-outline">Explore</a>
                 </p>
               </div>
             </div>
@@ -43,7 +43,7 @@ function Contact() {
                         </svg>
                       </div>
                       <div className="service-contents">
-                        <p>43 Raymouth Rd. Baltemoer, London 3910</p>
+                        <p>Darkuman - Nyamekye <br />Adjacent Sergen Pharmacy</p>
                       </div>
                     </div>
                   </div>
@@ -56,7 +56,7 @@ function Contact() {
                         </svg>
                       </div>
                       <div className="service-contents">
-                        <p>info@yourdomain.com</p>
+                        <p>possibledecor@gmail.com</p>
                       </div>
                     </div>
                   </div>
@@ -69,7 +69,7 @@ function Contact() {
                         </svg>
                       </div>
                       <div className="service-contents">
-                        <p>+1 294 3925 3939</p>
+                        <p>+233 554 576 363</p>
                       </div>
                     </div>
                   </div>
