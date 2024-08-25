@@ -1,45 +1,75 @@
-import React, { useState } from "react";
-import { useCart } from "../Context/CartContext"; // Ensure this is the correct path to your CartContext
+import React, { useState, useEffect } from "react";
+import { useCart } from "../Context/CartContext";
+import { collection, getDocs } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { db } from "../Firebase"; // Make sure this is the correct path to your Firebase config
 
 function Shop() {
-  const { addToCart, getCartItemCount } = useCart();
+  const { addToCart } = useCart();
+  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(10000);
 
+//   useEffect(() => {
+//     // Fetch products from Firestore
+//     const fetchProducts = async () => {
+//       const productsCollection = collection(db, "products"); // Ensure your Firestore collection is named "products"
+//       const productSnapshot = await getDocs(productsCollection);
+//       const productList = productSnapshot.docs.map(doc => ({
+//         id: doc.id,
+//         ...doc.data()
+//       }));
+//       console.log("Fetched Products:", productList); // Log the fetched products
+//     setProducts(productList);
+//   };
+
+//   fetchProducts();
+// }, []);
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    const productsCollection = collection(db, "products");
+    const productSnapshot = await getDocs(productsCollection);
+    const productList = await Promise.all(productSnapshot.docs.map(async (doc) => {
+      const data = doc.data();
+      let imageUrl = data.Image;
+      if (imageUrl && imageUrl.startsWith("gs://")) {
+        const storage = getStorage();
+        const imageRef = ref(storage, imageUrl);
+        try {
+          imageUrl = await getDownloadURL(imageRef);
+        } catch (error) {
+          console.error("Error getting download URL: ", error);
+          imageUrl = "/path/to/fallback-image.jpg"; // Use a fallback image
+        }
+      }
+      return {
+        id: doc.id,
+        ...data,
+        Image: imageUrl
+      };
+    }));
+    console.log("Fetched Products:", productList);
+    setProducts(productList);
+  };
+
+  fetchProducts();
+}, []);
   const handleAddToCart = (product) => {
     addToCart(product);
   };
 
-  const products = [
-    {
-      id: 1,
-      name: "Astronut Artefact",
-      price: 100.00,
-      imgSrc: "/assets/images/Product/Artefacts/1.jpg"
-    },
-    {
-      id: 2,
-      name: "Golden Artefact",
-      price: 150.00,
-      imgSrc: "/assets/images/Product/Artefacts/2.jpg"
-    },
-    {
-      id: 3,
-      name: "Silver Artefact",
-      price: 120.00,
-      imgSrc: "/assets/images/Product/Artefacts/3.jpg"
-    },
-    {
-      id: 4,
-      name: "Wooden Artefact",
-      price: 130.00,
-      imgSrc: "/assets/images/Product/Artefacts/4.jpg"
-    }
-  ];
-
-  // Filter products based on the search term
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter products based on the search term and price range
+  const filteredProducts = products.filter((product) => {
+    const productName = product.Name || ""; // Ensure productName is a string
+    const matchesSearchTerm = searchTerm === "" || productName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesPriceRange = product.Price >= minPrice && product.Price <= maxPrice;
+    
+    return matchesSearchTerm && matchesPriceRange;
+  });
+  
+     console.log("filtered",filteredProducts)
 
   return (
     <div>
@@ -50,6 +80,7 @@ function Shop() {
             <div className="col-lg-5">
               <div className="intro-excerpt">
                 <h1>Shop</h1>
+
               </div>
             </div>
             <div className="col-lg-7"></div>
@@ -58,10 +89,13 @@ function Shop() {
       </div>
       {/* End Hero Section */}
 
+
       <div className="shop">
+
         <div className="container">
           <div className="sidebar">
             <h2>Categories</h2>
+
             <ul className="category-list">
               <li><a href="/wallpapers">Wallpapers</a></li>
               <li><a href="/flowers">Decor Flowers</a></li>
@@ -92,6 +126,8 @@ function Shop() {
                 name="min-price"
                 min="0"
                 placeholder="0"
+                value={minPrice}
+                onChange={(e) => setMinPrice(Number(e.target.value))}
               />
               <label htmlFor="max-price">Max Price:</label>
               <input
@@ -100,34 +136,44 @@ function Shop() {
                 name="max-price"
                 min="0"
                 placeholder="10000"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
               />
-              <button>Apply</button>
+              <button onClick={() => setSearchTerm(searchTerm)}>Apply</button>
             </div>
           </div>
         </div>
-
+          
         <div className="main-content">
           <div className="products-display">
+
             {/* Main content, like products listing, here */}
             <div className="untree_co-section product-section before-footer-section">
               <div className="product-container">
+               
                 <div className="row">
                   {filteredProducts.map((product) => (
                     <div key={product.id} className="col-12 col-md-4 col-lg-3 mb-5">
                       <div className="product-item">
+                        
                         <img
-                          src={product.imgSrc}
+                          src={product.Image}
                           className="img-fluid product-thumbnail"
-                          alt={product.name}
+                          alt={product.Name}
                         />
-                        <h3 className="product-title">{product.name}</h3>
-                        <strong className="product-price">GH₵ {product.price.toFixed(2)}</strong>
-                        <button 
+                        <h3 className="product-title">{product.Name}</h3>
+                        <strong className="product-price">GH₵ {product.Price}</strong>
+                        {/* <button 
                           className="btn-add-to-cart" 
                           onClick={() => handleAddToCart(product)}
                         >
                           Add to Cart
-                        </button>
+                        </button> */}
+                        <span className="icon-cross"
+                        onClick={() => handleAddToCart(product)}>                          
+                    <img
+                      src="../assets/images/cross.svg" className="img-fluid" alt="Close Icon"/>
+                      </span>
                       </div>
                     </div>
                   ))}

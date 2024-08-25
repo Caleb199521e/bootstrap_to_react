@@ -1,4 +1,5 @@
 import React from 'react'
+import Sidebar from '../components/Sidebar'
 
 function Tiles() {
   return (
@@ -20,34 +21,7 @@ function Tiles() {
 </div>
 {/* End Hero Section */}
 <div className="shop">
-    <div className="container">
-        <div className="sidebar">
-            <h2>Categories</h2>
-            <ul className="category-list">
-                <li><a href="/wallpaper">Wallpapers</a></li>
-                <li><a href="/Flowers">Decor Flowers</a></li>
-                <li><a href="/Tiles">PVC Tiles & Wall Panels</a></li>
-                <li><a href="/Panels">Fluted Panels</a></li>
-                <li><a href="/Sheets">Marble Sheets</a></li>
-                <li><a href="/vases">Vases</a></li>
-                <li><a href="/wallclocks">Wall Clocks</a></li>
-                <li><a href="/Accessories">Decor Accessories</a></li>
-                <li><a href="/shelves">Shelves</a></li>
-                {/* Add more categories as needed */}
-            </ul>
-            <div className="search-bar">
-                <input type="text" id="product-search" placeholder="Search products..."/>
-            </div>
-            <div className="price-filter">
-                <h3>Filter by Price</h3>
-                <label htmlFor="min-price">Min Price:</label>
-                <input type="number" id="min-price" name="min-price" min="0" placeholder="0" />
-                <label htmlFor="max-price">Max Price:</label>
-                <input type="number" id="max-price" name="max-price" min="0" placeholder="10000" />
-                <button>Apply</button>
-            </div>
-        </div>
-    </div>
+   <Sidebar/>
 
     <div className="main-content">
         <div className="products-display">

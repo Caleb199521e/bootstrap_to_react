@@ -1,0 +1,118 @@
+.cartContainer {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .cartTitle {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .cartTable {
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .cartHeader {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    background-color: #f5f5f5;
+    padding: 15px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .cartItem {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    padding: 15px;
+    border-top: 1px solid #e0e0e0;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .productInfo {
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
+  
+  .productImage {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 4px;
+  }
+  
+  .productName {
+    font-weight: bold;
+  }
+  
+  .quantityControl {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .quantityControl button {
+    width: 30px;
+    height: 30px;
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .quantityControl input {
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    margin: 0 5px;
+  }
+  
+  .removeButton {
+    /* background-color: #ff4d4d;
+    color: white; */
+    border: none;
+    /* padding: 5px 10px; */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s; 
+    font-size: 24px;
+  }
+  .removeButton:hover{
+    transform: scale(1.1); /* Slightly enlarge the icon on hover */
+    color: #c82333; /* Darker red on hover */
+    
+  }
+  
+  .cartSummary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+  
+  .checkoutButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .emptyCart {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+  }

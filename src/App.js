@@ -26,6 +26,12 @@ import Vases from "./Pages/Vases";
 import Header from "./components/header";
 import Footer from "./components/Footer";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  Alert,
+  AlertTitle,
+  AlertIcon,
+  AlertDescription,
+} from "@chakra-ui/alert";
 
 function App() {
   const location = useLocation();
