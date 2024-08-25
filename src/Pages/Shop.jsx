@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../Context/CartContext";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { db } from "../Firebase"; // Make sure this is the correct path to your Firebase config
+import { db } from "../Firebase"; // Ensure this is the correct path to your Firebase config
 
 function Shop() {
   const { addToCart } = useCart();
@@ -11,51 +11,38 @@ function Shop() {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(10000);
 
-//   useEffect(() => {
-//     // Fetch products from Firestore
-//     const fetchProducts = async () => {
-//       const productsCollection = collection(db, "products"); // Ensure your Firestore collection is named "products"
-//       const productSnapshot = await getDocs(productsCollection);
-//       const productList = productSnapshot.docs.map(doc => ({
-//         id: doc.id,
-//         ...doc.data()
-//       }));
-//       console.log("Fetched Products:", productList); // Log the fetched products
-//     setProducts(productList);
-//   };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      // Query to fetch only selected products
+      const q = query(collection(db, "products"), where("isFeatured", "==", true));
+      const productSnapshot = await getDocs(q);
+      const productList = await Promise.all(
+        productSnapshot.docs.map(async (doc) => {
+          const data = doc.data();
+          let imageUrl = data.Image;
+          if (imageUrl && imageUrl.startsWith("gs://")) {
+            const storage = getStorage();
+            const imageRef = ref(storage, imageUrl);
+            try {
+              imageUrl = await getDownloadURL(imageRef);
+            } catch (error) {
+              console.error("Error getting download URL: ", error);
+              imageUrl = "/path/to/fallback-image.jpg"; // Use a fallback image
+            }
+          }
+          return {
+            id: doc.id,
+            ...data,
+            Image: imageUrl,
+          };
+        })
+      );
+      setProducts(productList);
+    };
 
-//   fetchProducts();
-// }, []);
+    fetchProducts();
+  }, []);
 
-useEffect(() => {
-  const fetchProducts = async () => {
-    const productsCollection = collection(db, "products");
-    const productSnapshot = await getDocs(productsCollection);
-    const productList = await Promise.all(productSnapshot.docs.map(async (doc) => {
-      const data = doc.data();
-      let imageUrl = data.Image;
-      if (imageUrl && imageUrl.startsWith("gs://")) {
-        const storage = getStorage();
-        const imageRef = ref(storage, imageUrl);
-        try {
-          imageUrl = await getDownloadURL(imageRef);
-        } catch (error) {
-          console.error("Error getting download URL: ", error);
-          imageUrl = "/path/to/fallback-image.jpg"; // Use a fallback image
-        }
-      }
-      return {
-        id: doc.id,
-        ...data,
-        Image: imageUrl
-      };
-    }));
-    console.log("Fetched Products:", productList);
-    setProducts(productList);
-  };
-
-  fetchProducts();
-}, []);
   const handleAddToCart = (product) => {
     addToCart(product);
   };
@@ -68,8 +55,6 @@ useEffect(() => {
     
     return matchesSearchTerm && matchesPriceRange;
   });
-  
-     console.log("filtered",filteredProducts)
 
   return (
     <div>
@@ -80,7 +65,6 @@ useEffect(() => {
             <div className="col-lg-5">
               <div className="intro-excerpt">
                 <h1>Shop</h1>
-
               </div>
             </div>
             <div className="col-lg-7"></div>
@@ -89,9 +73,7 @@ useEffect(() => {
       </div>
       {/* End Hero Section */}
 
-
       <div className="shop">
-
         <div className="container">
           <div className="sidebar">
             <h2>Categories</h2>
@@ -106,7 +88,6 @@ useEffect(() => {
               <li><a href="/wallclocks">Wall Clocks</a></li>
               <li><a href="/decorAccessories">Decor Accessories</a></li>
               <li><a href="/shelves">Shelves</a></li>
-              {/* Add more categories as needed */}
             </ul>
             <div className="search-bar">
               <input
@@ -146,16 +127,13 @@ useEffect(() => {
           
         <div className="main-content">
           <div className="products-display">
-
             {/* Main content, like products listing, here */}
             <div className="untree_co-section product-section before-footer-section">
               <div className="product-container">
-               
                 <div className="row">
                   {filteredProducts.map((product) => (
                     <div key={product.id} className="col-12 col-md-4 col-lg-3 mb-5">
                       <div className="product-item">
-                        
                         <img
                           src={product.Image}
                           className="img-fluid product-thumbnail"
@@ -163,17 +141,16 @@ useEffect(() => {
                         />
                         <h3 className="product-title">{product.Name}</h3>
                         <strong className="product-price">GH₵ {product.Price}</strong>
-                        {/* <button 
-                          className="btn-add-to-cart" 
+                        <span
+                          className="icon-cross"
                           onClick={() => handleAddToCart(product)}
                         >
-                          Add to Cart
-                        </button> */}
-                        <span className="icon-cross"
-                        onClick={() => handleAddToCart(product)}>                          
-                    <img
-                      src="../assets/images/cross.svg" className="img-fluid" alt="Close Icon"/>
-                      </span>
+                          <img
+                            src="../assets/images/cross.svg"
+                            className="img-fluid"
+                            alt="Close Icon"
+                          />
+                        </span>
                       </div>
                     </div>
                   ))}
